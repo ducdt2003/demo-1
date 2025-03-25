@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="utf-8"/>
@@ -40,7 +40,7 @@
     </nav>
 </header>
 
-<section class="py-4">
+<!--<section class="py-4">
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -50,67 +50,64 @@
             </ol>
         </nav>
 
-        <div class="row">
+     &lt;!&ndash;   <div class="row">
+            &lt;!&ndash; Cột ảnh poster &ndash;&gt;
             <div class="col-4">
                 <div class="movie-poster">
-                    <img src="https://homepage.momocdn.net/cinema/momo-cdn-api-220615142913-637909001532744942.jpg"
-                         alt="Đầu gấu đụng đầu đất">
+                    <img th:src="${movie.thumbnail}" th:alt="${movie.name}">
                 </div>
             </div>
 
+            &lt;!&ndash; Cột thông tin phim &ndash;&gt;
             <div class="col-8">
+                <h2 th:text="${movie.name}"></h2>
+                <p th:text="'Đánh giá: ' + ${movie.rating} + '⭐️'"></p>
+                <p><strong>Thể loại:</strong> <span th:text="${movie.genre}"></span></p>
+                <p><strong>Năm:</strong> <span th:text="${movie.year}"></span></p>
+                <p><strong>Mô tả:</strong></p>
+                <p th:text="${movie.description}"></p>
+            </div>
+        </div>&ndash;&gt;
+        <div class="row">
+            &lt;!&ndash; Cột ảnh poster &ndash;&gt;
+            <div class="col-4">
+                <div class="movie-poster">
+                    <img th:src="${movie.thumbnail}" th:alt="${movie.name}">
+                </div>
+            </div>
+
+            &lt;!&ndash; Cột thông tin chi tiết &ndash;&gt;
+            <div class="col-8">
+                &lt;!&ndash; Tên phim và đánh giá &ndash;&gt;
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h4>Đầu gấu đụng đầu đất</h4>
-                    <h5>7.5 ⭐️</h5>
+                    <h4 th:text="${movie.name}"></h4>
+                    <h5 th:text="'Đánh giá: ' + ${movie.rating} + '⭐️'"></h5>
                 </div>
 
+                &lt;!&ndash; Thông tin chi tiết &ndash;&gt;
                 <div class="bg-body-tertiary p-3">
                     <div class="row">
                         <div class="col-2">
                             <p class="fw-medium">Thể loại</p>
                         </div>
                         <div class="col-10">
-                            <p>Hài, Hành động</p>
+                            <p th:text="${movie.genre}"></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-2">
-                            <p class="fw-medium">Thể loại</p>
+                            <p class="fw-medium">Năm</p>
                         </div>
                         <div class="col-10">
-                            <p>Hài, Hành động</p>
+                            <p th:text="${movie.year}"></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-2">
-                            <p class="fw-medium">Thể loại</p>
+                            <p class="fw-medium">Mô tả</p>
                         </div>
                         <div class="col-10">
-                            <p>Hài, Hành động</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-2">
-                            <p class="fw-medium">Thể loại</p>
-                        </div>
-                        <div class="col-10">
-                            <p>Hài, Hành động</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-2">
-                            <p class="fw-medium">Thể loại</p>
-                        </div>
-                        <div class="col-10">
-                            <p>Hài, Hành động</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-2">
-                            <p class="fw-medium">Thể loại</p>
-                        </div>
-                        <div class="col-10">
-                            <p>Hài, Hành động</p>
+                            <p th:text="${movie.description}"></p>
                         </div>
                     </div>
                 </div>
@@ -118,20 +115,245 @@
                 <button class="btn btn-danger mt-3 px-5">Xem phim</button>
             </div>
         </div>
+             &lt;!&ndash;<div class="row">
+                 <div class="col-4">
+                     <div class="movie-poster">
+                         <img src="https://homepage.momocdn.net/cinema/momo-cdn-api-220615142913-637909001532744942.jpg"
+                              alt="Đầu gấu đụng đầu đất">
+                     </div>
+                 </div>
+
+                 <div class="col-8">
+                     <div class="d-flex justify-content-between align-items-center mb-2">
+                         <h4>Đầu gấu đụng đầu đất</h4>
+                         <h5>7.5 ⭐️</h5>
+                     </div>
+
+                     <div class="bg-body-tertiary p-3">
+                         <div class="row">
+                             <div class="col-2">
+                                 <p class="fw-medium">Thể loại</p>
+                             </div>
+                             <div class="col-10">
+                                 <p>Hài, Hành động</p>
+                             </div>
+                         </div>
+                         <div class="row">
+                             <div class="col-2">
+                                 <p class="fw-medium">Thể loại</p>
+                             </div>
+                             <div class="col-10">
+                                 <p>Hài, Hành động</p>
+                             </div>
+                         </div>
+                         <div class="row">
+                             <div class="col-2">
+                                 <p class="fw-medium">Thể loại</p>
+                             </div>
+                             <div class="col-10">
+                                 <p>Hài, Hành động</p>
+                             </div>
+                         </div>
+                         <div class="row">
+                             <div class="col-2">
+                                 <p class="fw-medium">Thể loại</p>
+                             </div>
+                             <div class="col-10">
+                                 <p>Hài, Hành động</p>
+                             </div>
+                         </div>
+                         <div class="row">
+                             <div class="col-2">
+                                 <p class="fw-medium">Thể loại</p>
+                             </div>
+                             <div class="col-10">
+                                 <p>Hài, Hành động</p>
+                             </div>
+                         </div>
+                         <div class="row">
+                             <div class="col-2">
+                                 <p class="fw-medium">Thể loại</p>
+                             </div>
+                             <div class="col-10">
+                                 <p>Hài, Hành động</p>
+                             </div>
+                         </div>
+                     </div>
+
+                     <button class="btn btn-danger mt-3 px-5">Xem phim</button>
+                 </div>
+             </div>&ndash;&gt;
 
         <div class="row">
             <h4>Tập phim</h4>
             <div>
-                <button class="btn btn-dark">Tập 1</button>
-                <button class="btn btn-dark">Tập 1</button>
-                <button class="btn btn-dark">Tập 1</button>
-                <button class="btn btn-dark">Tập 1</button>
-                <button class="btn btn-dark">Tập 1</button>
-                <button class="btn btn-dark">Tập 1</button>
-                <button class="btn btn-dark">Tập 1</button>
-                <button class="btn btn-dark">Tập 1</button>
-                <button class="btn btn-dark">Tập 1</button>
-                <button class="btn btn-dark">Tập 1</button>
+                <button class="btn btn-dark">Tập 2</button>
+                <button class="btn btn-dark">Tập 3</button>
+                <button class="btn btn-dark">Tập 4</button>
+                <button class="btn btn-dark">Tập 5</button>
+                <button class="btn btn-dark">Tập 6</button>
+                <button class="btn btn-dark">Tập 7</button>
+                <button class="btn btn-dark">Tập 8</button>
+                <button class="btn btn-dark">Tập 9</button>
+                <button class="btn btn-dark">Tập 10</button>
+                <button class="btn btn-dark">Tập 11</button>
+            </div>
+        </div>
+    </div>
+</section>-->
+<!--hiện thi-->
+<!--<section class="py-4">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="#">Phim bộ</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="${movie.name}"></li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            &lt;!&ndash; Cột ảnh poster &ndash;&gt;
+            <div class="col-4">
+                <div class="movie-poster">
+                    <img th:src="${movie.thumbnail}" th:alt="${movie.name}">
+                </div>
+            </div>
+
+            &lt;!&ndash; Cột thông tin chi tiết &ndash;&gt;
+            <div class="col-8">
+                &lt;!&ndash; Tên phim và đánh giá &ndash;&gt;
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h4 th:text="${movie.name}"></h4>
+                    <h5 th:text="'Đánh giá: ' + ${movie.rating} + '⭐️'"></h5>
+                </div>
+
+                &lt;!&ndash; Thông tin chi tiết &ndash;&gt;
+                <div class="bg-body-tertiary p-3">
+                    <div class="row">
+                        <div class="col-2">
+                            <p class="fw-medium">Thể loại</p>
+                        </div>
+                        <div class="col-10">
+                            <p th:text="${movie.genre}"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <p class="fw-medium">Năm</p>
+                        </div>
+                        <div class="col-10">
+                            <p th:text="${movie.year}"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <p class="fw-medium">Mô tả</p>
+                        </div>
+                        <div class="col-10">
+                            <p th:text="${movie.description}"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-danger mt-3 px-5">Xem phim</button>
+            </div>
+        </div>
+    </div>
+</section>-->
+<section class="py-4">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="/phim-bo">Phim bộ</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="${movie.name}">Tên phim</li>
+            </ol>
+        </nav>
+
+        <!-- Thông tin chi tiết phim -->
+        <div class="row">
+            <!-- Cột ảnh poster -->
+            <div class="col-4">
+                <div class="movie-poster">
+                    <!-- Nếu movie.thumbnail trong database null, bạn có thể cung cấp đường dẫn ảnh mặc định -->
+                    <img class="img-fluid"
+                         th:src="${movie.thumbnail != null ? movie.thumbnail : '/images/default-thumbnail.png'}"
+                         th:alt="${movie.name}">
+                </div>
+            </div>
+
+            <!-- Cột thông tin chi tiết -->
+            <div class="col-8">
+                <!-- Tên phim và điểm đánh giá -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 th:text="${movie.name}">Tên phim</h2>
+                    <h5 class="text-warning" th:text="'Đánh giá: ' + (${movie.rating} != null ? movie.rating : 'N/A') + ' ⭐️'">
+                        Đánh giá
+                    </h5>
+                </div>
+
+                <!-- Bảng thông tin chi tiết -->
+                <div class="bg-light p-3 rounded">
+                    <!-- Thể loại -->
+                    <div class="row mb-2">
+                        <div class="col-3">
+                            <p class="fw-bold">Thể loại</p>
+                        </div>
+                        <div class="col-9">
+                            <p th:text="${movie.genre != null ? movie.genre : 'N/A'}">Thể loại</p>
+                        </div>
+                    </div>
+                    <!-- Năm phát hành -->
+                    <div class="row mb-2">
+                        <div class="col-3">
+                            <p class="fw-bold">Năm phát hành</p>
+                        </div>
+                        <div class="col-9">
+                            <p th:text="${movie.year != null ? movie.year : 'N/A'}">Năm</p>
+                        </div>
+                    </div>
+                    <!-- Quốc gia -->
+                    <div class="row mb-2">
+                        <div class="col-3">
+                            <p class="fw-bold">Quốc gia</p>
+                        </div>
+                        <div class="col-9">
+                            <p th:text="${movie.country != null ? movie.country : 'N/A'}">Quốc gia</p>
+                        </div>
+                    </div>
+                    <!-- Đạo diễn -->
+                    <div class="row mb-2">
+                        <div class="col-3">
+                            <p class="fw-bold">Đạo diễn</p>
+                        </div>
+                        <div class="col-9">
+                            <p th:text="${movie.director != null ? movie.director : 'N/A'}">Đạo diễn</p>
+                        </div>
+                    </div>
+                    <!-- Diễn viên -->
+                    <div class="row mb-2">
+                        <div class="col-3">
+                            <p class="fw-bold">Diễn viên</p>
+                        </div>
+                        <div class="col-9">
+                            <p th:text="${movie.cast != null ? movie.cast : 'N/A'}">Diễn viên</p>
+                        </div>
+                    </div>
+                    <!-- Mô tả -->
+                    <div class="row">
+                        <div class="col-3">
+                            <p class="fw-bold">Mô tả</p>
+                        </div>
+                        <div class="col-9">
+                            <p th:text="${movie.description != null ? movie.description : 'N/A'}">Mô tả phim</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nút xem phim -->
+                <button class="btn btn-danger mt-3 px-5">Xem phim</button>
             </div>
         </div>
     </div>
@@ -356,5 +578,4 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 </body>
-
 </html>

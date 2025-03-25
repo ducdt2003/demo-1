@@ -60,27 +60,8 @@
                 </a>
             </div>
         </div>
-
+<!--
         <nav class="mt-4">
-            <ul class="pagination justify-content-center">
-                <!-- Nút "Previous" -->
-                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{'/phim-bo?page=' + ${currentPage - 1}}" aria-label="Previous">Previous</a>
-                </li>
-
-                <!-- Số trang -->
-                <li class="page-item" th:each="pageNum : ${#numbers.sequence(1, moviePage.totalPages)}"
-                    th:classappend="${pageNum == currentPage} ? 'active'">
-                    <a class="page-link" th:href="@{'/phim-bo?page=' + ${pageNum}}" th:text="${pageNum}"></a>
-                </li>
-
-                <!-- Nút "Next" -->
-                <li class="page-item" th:classappend="${currentPage == moviePage.totalPages} ? 'disabled'">
-                    <a class="page-link" th:href="@{'/phim-bo?page=' + ${currentPage + 1}}" aria-label="Next">Next</a>
-                </li>
-            </ul>
-        </nav>
-        <!--<nav class="mt-4">
             <ul class="pagination justify-content-center">
                 <li class="page-item disabled">
                     <a class="page-link">Previous</a>
@@ -93,6 +74,25 @@
                 </li>
             </ul>
         </nav>-->
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                <!-- Nút "Previous" -->
+                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{'/phim-le?page=' + ${currentPage - 1}}" aria-label="Previous">Previous</a>
+                </li>
+
+                <!-- Số trang -->
+                <li class="page-item" th:each="pageNum : ${#numbers.sequence(1, moviePage.totalPages)}"
+                    th:classappend="${pageNum == currentPage} ? 'active'">
+                    <a class="page-link" th:href="@{'/phim-le?page=' + ${pageNum}}" th:text="${pageNum}"></a>
+                </li>
+
+                <!-- Nút "Next" -->
+                <li class="page-item" th:classappend="${currentPage == moviePage.totalPages} ? 'disabled'">
+                    <a class="page-link" th:href="@{'/phim-bo?page=' + ${currentPage + 1}}" aria-label="Next">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </section>
 
