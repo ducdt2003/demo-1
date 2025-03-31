@@ -4,7 +4,6 @@ import com.example.movieapp.entity.Movie;
 import com.example.movieapp.model.enums.MovieType;
 import com.example.movieapp.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +17,7 @@ import java.util.List;
 public class MovieService {
     private final MovieRepository movieRepository;
 
-    public List<Movie> findHotMovie(Boolean status, Integer limit){
+    public List<Movie> findHotMovie(Boolean status, Integer limit) {
         return movieRepository.findHotMovie(status, limit);
     }
 
@@ -29,10 +28,6 @@ public class MovieService {
     }
 
     public Movie findMovieDetails(Integer id, String slug) {
-        // Tìm phim bằng ID, Slug và Status = true
         return movieRepository.findByIdAndSlugAndStatus(id, slug, true);
     }
-
-
-
 }

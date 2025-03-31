@@ -3,42 +3,73 @@ package com.example.movieapp.entity;
 import com.example.movieapp.model.enums.MovieType;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @ToString
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "movies")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    Integer id;
 
     @Column(nullable = false)
-    private String name;
+    String name;
 
-    private String slug;
+    String slug;
 
     @Column(columnDefinition = "TEXT")
-    private String description;
+    String description;
 
-    private String thumbnail;
-    private Integer releaseYear;
-    private Boolean status;
-    private String trailer;
+    String thumbnail;
+    Integer releaseYear;
+    Boolean status;
+    String trailer;
 
     @Column(columnDefinition = "double default 5.0")
-    private Double rating;
+    Double rating;
 
     @Enumerated(EnumType.STRING)
-    private MovieType type;
+    MovieType type;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private LocalDateTime publishedAt;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
+    LocalDateTime publishedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    Country country;
+
+    @ManyToMany
+    @JoinTable(
+            name = "movies_genres",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    List<Genre> genres;
+
+    @ManyToMany
+    @JoinTable(
+            name = "movies_actors",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id")
+    )
+    List<Actor> actors;
+
+    @ManyToMany
+    @JoinTable(
+            name = "movies_directors",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "director_id")
+    )
+    List<Director> directors;
 }
