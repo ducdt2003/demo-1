@@ -1,69 +1,51 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta charset="UTF-8">
     <title>Phim Yêu Thích</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
-
 <body>
-<header>
-    <nav class="navbar navbar-expand-lg bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/static">
-                <img src="https://movie.techmaster.vn/assets/logo-C2IIl7EL.png" alt="logo"/>
-            </a>
-            <div class="navbar-nav">
-                <a class="nav-link text-white" href="/static">Trang chủ</a>
-                <a class="nav-link text-white" href="/phim-bo">Phim bộ</a>
-                <a class="nav-link text-white" href="/phim-chieu-rap">Phim chiếu rạp</a>
-                <a class="nav-link text-white" href="/phim-le">Phim lẻ</a>
-            </div>
-        </div>
-    </nav>
-</header>
+<h1>Danh Sách Phim Yêu Thích</h1>
 
-<section class="container mt-4">
-    <h2 class="text-center">Chi tiết phim</h2>
+<!-- Form thêm phim vào danh sách yêu thích -->
+<form th:action="@{/favorites/add}" method="post">
+    <input type="hidden" name="userId" th:value="${userId}" />
+    <label>Movie ID: <input type="number" name="movieId" required /></label>
+    <button type="submit">Thêm Phim</button>
+</form>
 
-    <div class="row">
-        <div class="col-4">
-            <img th:src="${movie.thumbnail}" class="img-fluid" th:alt="${movie.name}">
-        </div>
+<!-- Hiển thị danh sách phim yêu thích -->
+<table border="1" cellspacing="0" cellpadding="8">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Movie ID</th>
+        <th>Tên Phim</th>
+        <th>Hành Động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="favorite : ${favorites}">
+        <td th:text="${favorite.id}">1</td>
+        <td th:text="${favorite.movieId}">MovieId</td>
+        <!-- Giả sử entity Favorite có trường movieTitle, nếu không bạn có thể thay đổi hoặc bổ sung thông tin từ nơi khác -->
+        <td th:text="${favorite.movieTitle}">Tên Phim</td>
+        <td>
+            <!-- Form xoá 1 phim yêu thích -->
+            <form th:action="@{/favorites/remove}" method="post" style="display:inline">
+                <input type="hidden" name="userId" th:value="${userId}" />
+                <input type="hidden" name="movieId" th:value="${favorite.movieId}" />
+                <button type="submit">Xóa</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
-        <div class="col-8">
-            <h4 th:text="${movie.name}">Tên phim</h4>
-            <h5><span th:text="${movie.rating}"></span> ⭐️</h5>
-
-            <div class="bg-light p-3">
-                <p><strong>Thể loại:</strong> <span th:each="genre : ${movie.genres}" th:text="${genre.name}"></span></p>
-                <p><strong>Năm sản xuất:</strong> <span th:text="${movie.releaseYear}"></span></p>
-                <p><strong>Quốc gia:</strong> <span th:text="${movie.country.name}"></span></p>
-                <p><strong>Đạo diễn:</strong> <span th:each="director : ${movie.directors}" th:text="${director.name}"></span></p>
-                <p><strong>Diễn viên:</strong> <span th:each="actor : ${movie.actors}" th:text="${actor.name}"></span></p>
-                <p><strong>Mô tả:</strong> <span th:text="${movie.description}"></span></p>
-            </div>
-
-            <!-- Nút Xem Phim -->
-            <th:block th:if="${!episodes.isEmpty()}" th:with="episode=${episodes.get(0)}">
-                <a class="btn btn-danger mt-3 px-5"
-                   th:href="'/xem-phim/' + ${movie.id} + '/' + ${movie.slug} + '?tap=' + ${movie.type.toString().equals('PHIM_BO') ? episode.displayOrder : 'full'}">
-                    Xem phim
-                </a>
-
-                <!-- Nút Thêm vào yêu thích -->
-                <form th:action="@{/favorites/add}" method="post" class="d-inline">
-                    <input type="hidden" th:value="${movie.id}" name="movieId"/>
-                    <input type="hidden" th:value="${user.id}" name="userId"/>
-                    <button type="submit" class="btn btn-warning mt-3 px-5">💖 Thêm vào yêu thích</button>
-                </form>
-            </th:block>
-        </div>
-    </div>
-</section>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Form xoá toàn bộ phim yêu thích -->
+<form th:action="@{/favorites/removeAll/{userId}(userId=${userId})}" method="post">
+    <button type="submit">Xóa Tất Cả</button>
+</form>
 </body>
 </html>
