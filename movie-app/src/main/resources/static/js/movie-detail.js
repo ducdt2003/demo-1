@@ -194,5 +194,139 @@ reviewForm.addEventListener("submit", async (event) => {
     }
 });
 
+
+// Điền dữ liệu vào modal chỉnh sửa
+    document.querySelectorAll('.edit-review').forEach(button => {
+        button.addEventListener('click', () => {
+            document.getElementById('edit-review-id').value = button.getAttribute('data-review-id');
+            document.getElementById('edit-review-content').value = button.getAttribute('data-review-content');
+            document.getElementById('edit-review-rating').value = button.getAttribute('data-review-rating');
+        });
+    });
+
+    // Xóa review
+    document.querySelectorAll('.delete-review').forEach(button => {
+        button.addEventListener('click', () => {
+            const reviewId = button.getAttribute('data-review-id');
+            if (confirm('Bạn có chắc muốn xóa bình luận này?')) {
+                fetch(`/api/reviews/${reviewId}`, {
+                    method: 'DELETE'
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        alert('Lỗi khi xóa bình luận');
+                    }
+                });
+            }
+        });
+    });
+
+    // Cập nhật review
+    document.getElementById('edit-review-form').addEventListener('submit', event => {
+        event.preventDefault();
+        const reviewId = document.getElementById('edit-review-id').value;
+        const content = document.getElementById('edit-review-content').value;
+        const rating = document.getElementById('edit-review-rating').value;
+
+        fetch(`/api/reviews/${reviewId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content, rating })
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert('Lỗi khi cập nhật bình luận');
+            }
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+        const reviewForm = document.getElementById("review-form");
+        const reviewIdInput = document.getElementById("edit-review-id");
+        const reviewContentInput = document.getElementById("edit-review-content");
+        const reviewRatingInput = document.getElementById("edit-review-rating");
+        const modalTitle = document.getElementById("exampleModalLabel");
+
+        // Điền dữ liệu vào modal chỉnh sửa
+        document.querySelectorAll(".edit-review").forEach(button => {
+            button.addEventListener("click", () => {
+                modalTitle.textContent = "Chỉnh sửa bình luận";
+                reviewIdInput.value = button.getAttribute("data-review-id") || "";
+                reviewContentInput.value = button.getAttribute("data-review-content") || "";
+                reviewRatingInput.value = button.getAttribute("data-review-rating") || "";
+            });
+        });
+
+        // Xóa review có kiểm tra quyền
+        document.querySelectorAll(".delete-review").forEach(button => {
+            button.addEventListener("click", () => {
+                const reviewId = button.getAttribute("data-review-id");
+                if (confirm("Bạn có chắc muốn xóa bình luận này?")) {
+                    fetch(`/api/reviews/${reviewId}?userId=1`, { // 🔹 Thay userId bằng ID người dùng thực tế
+                        method: "DELETE"
+                    }).then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            alert("Bạn không có quyền xóa bình luận này");
+                        }
+                    });
+                }
+            });
+        });
+
+        // Cập nhật review với thông báo phản hồi
+        document.getElementById("edit-review-form").addEventListener("submit", event => {
+            event.preventDefault();
+            const reviewId = reviewIdInput.value;
+            const content = reviewContentInput.value;
+            const rating = reviewRatingInput.value;
+
+            fetch(`/api/reviews/${reviewId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content, rating })
+            }).then(response => {
+                if (response.ok) {
+                    alert("Cập nhật bình luận thành công!");
+                    location.reload();
+                } else {
+                    alert("Lỗi khi cập nhật bình luận. Vui lòng thử lại.");
+                }
+            });
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Khởi chạy load trang đầu tiên
 getReviews(1);

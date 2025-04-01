@@ -1,5 +1,6 @@
 package com.example.movieapp.repository;
 
+import com.example.movieapp.entity.Genre;
 import com.example.movieapp.entity.Movie;
 import com.example.movieapp.model.enums.MovieType;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,4 +60,9 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
     Movie findByIdAndSlugAndStatus(Integer id, String slug, boolean b);
 
     Optional<Movie> findByIdAndStatusTrue(Integer movieId);
+
+    // 🔹 Lấy danh sách phim có ít nhất một thể loại thuộc danh sách genres được truyền vào
+    List<Movie> findByGenresIn(List<Genre> genres);
+
+
 }

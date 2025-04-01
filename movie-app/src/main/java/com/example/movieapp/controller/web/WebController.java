@@ -64,7 +64,7 @@ public class WebController {
         return "web/phim-chieu-rap";
     }
 
-    @GetMapping("/phim/{id}/{slug}")
+    /*@GetMapping("/phim/{id}/{slug}")
     public String getMovieDetailsPage(@PathVariable Integer id, @PathVariable String slug, Model model) {
         // Thông tin chi tiết phim
         Movie movie = movieService.findMovieDetails(id, slug);
@@ -73,6 +73,20 @@ public class WebController {
         // Lấy danh sách tập phim (movieId, status = true, sort by displayOrder asc)
         List<Episode> episodes = episodeService.findEpisodesByMovieId(id);
         model.addAttribute("episodes", episodes);
+        return "web/chi-tiet-phim";
+    }*/
+    @GetMapping("/phim/{id}/{slug}")
+    public String getMovieDetailsPage(@PathVariable Integer id, @PathVariable String slug, Model model) {
+        Movie movie = movieService.findMovieDetails(id, slug);
+        model.addAttribute("movie", movie);
+
+        List<Episode> episodes = episodeService.findEpisodesByMovieId(id);
+        model.addAttribute("episodes", episodes);
+
+        // 🔹 Lấy danh sách phim liên quan
+        List<Movie> relatedMovies = movieService.findRelatedMovies(id);
+        model.addAttribute("relatedMovies", relatedMovies);
+
         return "web/chi-tiet-phim";
     }
 
@@ -96,6 +110,11 @@ public class WebController {
         // Lấy tập phim theo `tap`
         Episode episode = episodeService.findEpisodeByDisplayOrder(id, tap);
         model.addAttribute("episode", episode);
+
+        // 🔹 Lấy danh sách phim liên quan
+        List<Movie> relatedMovies = movieService.findRelatedMovies(id);
+        model.addAttribute("relatedMovies", relatedMovies);
+
         return "web/xem-phim";
     }
 }

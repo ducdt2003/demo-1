@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,4 +31,19 @@ public class MovieService {
     public Movie findMovieDetails(Integer id, String slug) {
         return movieRepository.findByIdAndSlugAndStatus(id, slug, true);
     }
+
+    // phim liên quan
+    public List<Movie> findRelatedMovies(Integer movieId) {
+        // 🔹 Tìm phim theo ID
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy phim"));
+
+        // 🔹 Lấy danh sách phim có cùng thể loại nhưng loại bỏ phim hiện tại
+        return movieRepository.findByGenresIn(movie.getGenres()).stream()
+                .filter(m -> !m.getId().equals(movieId)) // Loại bỏ chính phim hiện tại
+                .limit(6) // Giới hạn 6 phim liên quan
+                .collect(Collectors.toList());
+    }
+
+
 }
