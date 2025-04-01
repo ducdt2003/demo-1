@@ -9,6 +9,7 @@ import com.github.slugify.Slugify;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +19,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @SpringBootTest
 class MovieAppApplicationTests {
+
     @Autowired
     private ActorRepository actorRepository;
 
@@ -28,41 +31,59 @@ class MovieAppApplicationTests {
     private CountryRepository countryRepository;
 
     @Autowired
+    private DirectorRepository directorRepository;
+
+    @Autowired
     private EpisodeRepository episodeRepository;
+
+    @Autowired
+    private FavoriteRepository favoriteRepository;
 
     @Autowired
     private GenreRepository genreRepository;
 
+    @Autowired
+    private HistoryRepository historyRepository;
+
+    @Autowired
+    private MediaRepository mediaRepository;
 
     @Autowired
     private MovieRepository movieRepository;
 
+    @Autowired
+    private PostRepository postRepository;
 
     @Autowired
     private ReviewRepository reviewRepository;
 
     @Autowired
-    private DirectorRepository directorRepository;
-
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private PostRepository postRepository;
 
     @Test
     void save_countries() {
         Faker faker = new Faker();
         Slugify slugify = Slugify.builder().build();
+
         for (int i = 0; i < 10; i++) {
             String name = faker.country().name();
-            Country country = Country.builder()
-                    .name(name)
-                    .slug(slugify.slugify(name))
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
-                    .build();
-            countryRepository.save(country);
+            String uniqueSlug = slugify.slugify(name) + "-" + UUID.randomUUID().toString().substring(0, 8);
+
+            // Kiểm tra xem quốc gia đã tồn tại chưa
+            if (!countryRepository.existsByName(name) && !countryRepository.existsBySlug(uniqueSlug)) {
+                Country country = Country.builder()
+                        .name(name)
+                        .slug(uniqueSlug)
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .build();
+
+                try {
+                    countryRepository.save(country);
+                } catch (DataIntegrityViolationException e) {
+                    System.out.println("Lỗi: Quốc gia '" + name + "' đã tồn tại!");
+                }
+            }
         }
     }
 
@@ -172,7 +193,6 @@ class MovieAppApplicationTests {
         Slugify slugify = Slugify.builder().build();
         Random rd = new Random();
 
-
         List<Country> countries = countryRepository.findAll();
         List<Genre> genres = genreRepository.findAll();
         List<Actor> actors = actorRepository.findAll();
@@ -244,8 +264,6 @@ class MovieAppApplicationTests {
         }
     }
 
-
-
     @Test
     void save_episodes() {
         Faker faker = new Faker();
@@ -309,18 +327,6 @@ class MovieAppApplicationTests {
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Test
     void testQuery() {
