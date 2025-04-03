@@ -4,6 +4,7 @@ import com.example.movieapp.entity.Episode;
 import com.example.movieapp.entity.Movie;
 import com.example.movieapp.model.enums.MovieType;
 import com.example.movieapp.service.EpisodeService;
+import com.example.movieapp.service.FavoriteService;
 import com.example.movieapp.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import java.util.List;
 public class WebController {
     private final MovieService movieService;
     private final EpisodeService episodeService;
+    private final FavoriteService favoriteService;
 
     @GetMapping("/")
     public String getHomePage(Model model) {
@@ -74,7 +76,9 @@ public class WebController {
         List<Episode> episodes = episodeService.findEpisodesByMovieId(id);
         model.addAttribute("episodes", episodes);
         return "web/chi-tiet-phim";
-    }*/
+    }
+*/
+
     @GetMapping("/phim/{id}/{slug}")
     public String getMovieDetailsPage(@PathVariable Integer id, @PathVariable String slug, Model model) {
         Movie movie = movieService.findMovieDetails(id, slug);
@@ -89,6 +93,8 @@ public class WebController {
 
         return "web/chi-tiet-phim";
     }
+
+
 
     // /xem-phim/{id}/{slug}?tap=1, 2, 3 -> Phim bo
     // /xem-phim/{id}/{slug}?tap=full -> Phim le, phim chieu rap
@@ -117,4 +123,32 @@ public class WebController {
 
         return "web/xem-phim";
     }
+
+    /*@GetMapping("/phim-yeu-thich")
+    public String getFavoritePage(Model model){
+        return "web/favorites";
+    }*/
+
+    @GetMapping("/phim-yeu-thich")
+    public String getFavoritePage(@RequestParam Integer userId,
+                                  @RequestParam(defaultValue = "1") Integer page,
+                                  Model model) {
+        Page<Movie> moviePage = favoriteService.getUserFavoriteMovies(userId, page, 4);
+        model.addAttribute("userId", userId); // Truyền userId vào model
+        model.addAttribute("moviePage", moviePage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", moviePage.getTotalPages());
+        return "web/favorites";
+    }
+
+
+
+
+   /* @GetMapping("/phim-yeu-thich")
+    public String getFavoritePage(@RequestParam Integer userId, Model model) {
+        List<Movie> movies = favoriteService.getUserFavoriteMovies(userId, 1, 10);
+        model.addAttribute("movies", movies);
+        return "web/favorites";
+    }
+*/
 }

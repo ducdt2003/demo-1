@@ -166,6 +166,29 @@
     </div>
 </section>
 
+<section class="py-4">
+    <div class="container">
+        <h4 class="mb-3">Phim liên quan</h4>
+        <div class="row g-3">
+            <div class="col-lg-2 col-md-4 col-sm-6 col-12" th:each="relatedMovie : ${relatedMovies}">
+                <div class="card h-100 border-0 shadow-sm">
+                    <a th:href="'/phim/' + ${relatedMovie.id} + '/' + ${relatedMovie.slug}">
+                        <img th:src="${relatedMovie.thumbnail}" th:alt="${relatedMovie.name}" class="card-img-top rounded">
+                    </a>
+                    <div class="card-body text-center">
+                        <h6 class="fw-bold text-truncate" th:text="${relatedMovie.name}">Tên phim</h6>
+                        <p class="text-muted small text-truncate" th:text="${relatedMovie.description}">Mô tả phim...</p>
+                        <div class="d-flex justify-content-center gap-2 mt-2">
+                            <span class="badge bg-primary" th:text="${relatedMovie.releaseYear}">Năm</span>
+                            <span class="badge bg-warning text-dark" th:text="${relatedMovie.rating + ' ⭐'}">Đánh giá</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!--<section class="py-4 bg-body-tertiary">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -241,28 +264,7 @@
         </div>
     </div>
 </section>-->
-<section class="py-4">
-    <div class="container">
-        <h4 class="mb-3">Phim liên quan</h4>
-        <div class="row g-3">
-            <div class="col-lg-2 col-md-4 col-sm-6 col-12" th:each="relatedMovie : ${relatedMovies}">
-                <div class="card h-100 border-0 shadow-sm">
-                    <a th:href="'/phim/' + ${relatedMovie.id} + '/' + ${relatedMovie.slug}">
-                        <img th:src="${relatedMovie.thumbnail}" th:alt="${relatedMovie.name}" class="card-img-top rounded">
-                    </a>
-                    <div class="card-body text-center">
-                        <h6 class="fw-bold text-truncate" th:text="${relatedMovie.name}">Tên phim</h6>
-                        <p class="text-muted small text-truncate" th:text="${relatedMovie.description}">Mô tả phim...</p>
-                        <div class="d-flex justify-content-center gap-2 mt-2">
-                            <span class="badge bg-primary" th:text="${relatedMovie.releaseYear}">Năm</span>
-                            <span class="badge bg-warning text-dark" th:text="${relatedMovie.rating + ' ⭐'}">Đánh giá</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 
 

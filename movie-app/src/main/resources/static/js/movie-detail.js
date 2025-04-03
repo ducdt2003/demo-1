@@ -243,18 +243,6 @@ reviewForm.addEventListener("submit", async (event) => {
     });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
         const reviewForm = document.getElementById("review-form");
         const reviewIdInput = document.getElementById("edit-review-id");
@@ -311,22 +299,5 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Khởi chạy load trang đầu tiên
 getReviews(1);

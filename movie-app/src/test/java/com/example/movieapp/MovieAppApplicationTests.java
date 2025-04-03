@@ -16,10 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @SpringBootTest
 class MovieAppApplicationTests {
@@ -88,17 +85,62 @@ class MovieAppApplicationTests {
     }
 
     @Test
-    void save_genres() {
+    void save_favorites() {
+        // Tạo dữ liệu giả cho Movie
+        Movie movie = Movie.builder()
+                .name("Inception")
+                .description("A mind-bending thriller")
+                .releaseYear(2010)
+                .build();
+        movie = movieRepository.save(movie);
+
+        // Đảm bảo email là duy nhất
+        String uniqueEmail = "john.doe" + System.currentTimeMillis() + "@example.com";
+
+        // Tạo một người dùng với email duy nhất
+        User user = User.builder()
+                .username("john_doe")
+                .email(uniqueEmail)  // Sử dụng email duy nhất
+                .password("password123")
+                .build();
+        user = userRepository.save(user);
+
+        // Tạo một bản ghi yêu thích
+        Favorite favorite = Favorite.builder()
+                .movie(movie)
+                .user(user)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Favorite savedFavorite = favoriteRepository.save(favorite);
+
+        // Kiểm tra xem favorite đã được lưu thành công hay chưa
+        assert(savedFavorite != null);
+    }
+
+    @Test
+    void saveGenres() {
         Faker faker = new Faker();
         Slugify slugify = Slugify.builder().build();
+
         for (int i = 0; i < 10; i++) {
             String name = faker.leagueOfLegends().champion();
+            String slug = slugify.slugify(name);
+
+            // Kiểm tra xem thể loại đã tồn tại chưa
+            Optional<Genre> existingGenre = genreRepository.findBySlug(slug);
+            if (existingGenre.isPresent()) {
+                // Nếu tồn tại, thêm một định danh duy nhất vào slug
+                slug += "-" + UUID.randomUUID().toString().substring(0, 5);
+            }
+
             Genre genre = Genre.builder()
                     .name(name)
-                    .slug(slugify.slugify(name))
+                    .slug(slug)
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
                     .build();
+
             genreRepository.save(genre);
         }
     }
@@ -327,6 +369,7 @@ class MovieAppApplicationTests {
             }
         }
     }
+
 
     @Test
     void testQuery() {
