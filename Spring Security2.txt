@@ -1,0 +1,66 @@
+1. Các đối tượng trong Spring Security
+UserNamePasswordAuthenticationToken
+Là đối tượng đại diện cho thông tin xác thực của người dùng (thường là username và password).
+
+Được tạo ra khi người dùng gửi yêu cầu đăng nhập.
+
+Sau khi xác thực thành công, token sẽ chứa thêm thông tin quyền (authorities) của người dùng.
+
+AuthenticationManager
+Là bộ điều phối chính cho quy trình xác thực trong Spring Security.
+
+Tiếp nhận một đối tượng Authentication (ví dụ UsernamePasswordAuthenticationToken), sau đó chuyển cho các AuthenticationProvider xử lý.
+
+Nếu xác thực thành công, trả về một đối tượng Authentication đã được đánh dấu là authenticated.
+
+AuthenticationProvider
+Là thành phần chịu trách nhiệm xác thực chi tiết (username/password).
+
+Có thể có nhiều provider khác nhau (ví dụ: cho OAuth2, JWT, hay username/password).
+
+Cung cấp phương thức authenticate() để xử lý xác thực dựa trên kiểu Authentication nhận vào.
+
+PasswordEncoder
+Là bộ mã hóa/mã giải mật khẩu.
+
+Dùng để mã hóa mật khẩu người dùng khi lưu vào database và kiểm tra mật khẩu khi đăng nhập.
+
+Ví dụ: BCryptPasswordEncoder.
+
+UserDetailsService
+Là interface dùng để tải thông tin người dùng từ dữ liệu nguồn (database, API…).
+
+Cung cấp phương thức chính:
+UserDetails loadUserByUsername(String username)
+
+UserDetails
+Là đối tượng chứa thông tin người dùng được sử dụng trong Spring Security.
+
+Bao gồm: username, password, danh sách quyền (authorities), và trạng thái tài khoản.
+
+Thường tự định nghĩa class thực thi interface UserDetails theo nhu cầu.
+
+2. Workflow Spring Security (Sơ lược)
+Người dùng gửi yêu cầu đăng nhập với username và password.
+
+Spring Security tạo một đối tượng UsernamePasswordAuthenticationToken chứa thông tin đăng nhập.
+
+AuthenticationManager nhận token, phân phối nó tới các AuthenticationProvider tương ứng.
+
+Provider kiểm tra thông tin qua:
+
+UserDetailsService tải thông tin người dùng từ database.
+
+So sánh mật khẩu thông qua PasswordEncoder.
+
+Nếu đúng, trả về một đối tượng Authentication đã authenticated.
+
+Thông tin xác thực được lưu vào SecurityContextHolder.
+
+Sau đó, các request khác sẽ kiểm tra SecurityContextHolder để biết người dùng đã đăng nhập hay chưa.
+
+
+3. Session và Cookie
+Session lưu trên server, còn cookie lưu trên client.
+
+Cookie có thể dùng để lưu sessionID, còn session dùng để lưu dữ liệu thực tế.

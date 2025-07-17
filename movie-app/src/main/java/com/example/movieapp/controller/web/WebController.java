@@ -141,14 +141,8 @@ public class WebController {
         return "web/favorites";
     }
 
-
-
-
-   /* @GetMapping("/phim-yeu-thich")
-    public String getFavoritePage(@RequestParam Integer userId, Model model) {
-        List<Movie> movies = favoriteService.getUserFavoriteMovies(userId, 1, 10);
-        model.addAttribute("movies", movies);
-        return "web/favorites";
+    @GetMapping("/dang-nhap")
+    public String showLoginPage() {
+            return "web/login";
     }
-*/
 }

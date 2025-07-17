@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -56,6 +57,8 @@ class MovieAppApplicationTests {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Test
     void save_countries() {
@@ -203,6 +206,17 @@ class MovieAppApplicationTests {
     }
 
     @Test
+    void update_user_password() {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            String password = user.getPassword();
+            String newPassword = passwordEncoder.encode(password);
+            user.setPassword(newPassword);
+            userRepository.save(user);
+        }
+    }
+
+    @Test
     void save_posts() {
         Faker faker = new Faker();
         Slugify slugify = Slugify.builder().build();
@@ -311,7 +325,17 @@ class MovieAppApplicationTests {
         Faker faker = new Faker();
         List<Movie> movies = movieRepository.findAll();
 
+        if (movies.isEmpty()) {
+            System.out.println("Không có dữ liệu phim trong hệ thống.");
+            return;
+        }
+
         for (Movie movie : movies) {
+            // Kiểm tra `movie` và `movie.getType()` để tránh lỗi NullPointerException
+            if (movie == null || movie.getType() == null) {
+                continue;
+            }
+
             if (movie.getType().equals(MovieType.PHIM_BO)) {
                 // random 5 -> 10 episodes
                 for (int i = 0; i < faker.number().numberBetween(5, 11); i++) {
@@ -344,6 +368,7 @@ class MovieAppApplicationTests {
             }
         }
     }
+
 
     @Test
     void save_reviews() {
