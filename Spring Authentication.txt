@@ -1,0 +1,28 @@
+Bài 1: Basic Based Authentication
+Gửi username:password (mã hóa Base64) qua header HTTP ở mỗi request.
+
+Server giải mã và xác thực thông tin.
+
+Stateless (không lưu trạng thái).
+
+Dễ bị đánh cắp nếu không dùng HTTPS.
+
+Bài 2: Session Based Authentication
+Người dùng đăng nhập → server tạo sessionID lưu trên server.
+
+sessionID trả về cho client dưới dạng cookie.
+
+Mỗi request sau gửi sessionID, server kiểm tra để xác thực.
+
+Stateful (lưu trạng thái trên server).
+
+Bài 3: Token Based Authentication
+Sau khi đăng nhập, server tạo token (thường là JWT) gửi về client.
+
+Client gửi token kèm request (qua header).
+
+Server kiểm tra token để xác thực.
+
+Stateless (không lưu trạng thái trên server).
+
+Phù hợp API, app mobile.
